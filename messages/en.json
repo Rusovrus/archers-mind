@@ -1,0 +1,224 @@
+{
+  "common": {
+    "appName": "Archer's Mind",
+    "tagline": "Your mental coach for archery",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Continue your mental journey",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account",
+      "googleSignIn": "Continue with Google"
+    },
+    "register": {
+      "title": "Start your journey",
+      "subtitle": "Create your account to begin",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "passwordConfirm": "Confirm password",
+      "submit": "Create account",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Reset password",
+      "subtitle": "We'll send you a reset link",
+      "email": "Email",
+      "submit": "Send link",
+      "backToLogin": "Back to login",
+      "sent": "Reset link sent to your email"
+    },
+    "errors": {
+      "invalidEmail": "Invalid email",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "passwordMismatch": "Passwords don't match",
+      "userNotFound": "No account found with this email",
+      "wrongPassword": "Wrong password",
+      "emailInUse": "This email is already in use"
+    }
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Welcome",
+      "subtitle": "Mental preparation is 80% of your archery performance",
+      "start": "Let's begin"
+    },
+    "language": {
+      "title": "Choose your language",
+      "romanian": "Română",
+      "english": "English"
+    },
+    "profile": {
+      "title": "About you",
+      "skillLevel": "Your level",
+      "beginner": "Beginner (under 1 year)",
+      "intermediate": "Intermediate (1-3 years)",
+      "advanced": "Advanced (3+ years)",
+      "competitive": "Competitive (I compete)",
+      "bowType": "Bow type",
+      "recurve": "Recurve",
+      "compound": "Compound",
+      "barebow": "Barebow",
+      "traditional": "Traditional",
+      "yearsOfPractice": "Years of practice"
+    },
+    "goals": {
+      "title": "Your goals",
+      "subtitle": "What do you want to improve? (select multiple)",
+      "focus": "Focus and attention",
+      "anxiety": "Anxiety management",
+      "confidence": "Self-confidence",
+      "consistency": "Consistency",
+      "competition": "Competition performance",
+      "recovery": "Recovery from mistakes"
+    }
+  },
+  "nav": {
+    "today": "Today",
+    "journal": "Journal",
+    "exercises": "Exercises",
+    "program": "Program",
+    "routine": "Routine",
+    "competition": "Competition",
+    "profile": "Profile"
+  },
+  "today": {
+    "greeting": "Hello, {name}",
+    "todayPractice": "Today's practice",
+    "startExercise": "Start exercise",
+    "currentStreak": "{days} day streak",
+    "programProgress": "Day {day} of 84",
+    "noActivity": "No activity yet today"
+  },
+  "journal": {
+    "title": "Session journal",
+    "newSession": "New session",
+    "noSessions": "You have no sessions yet",
+    "startFirst": "Start with your first session",
+    "form": {
+      "date": "Date",
+      "type": "Session type",
+      "training": "Training",
+      "competition": "Competition",
+      "tune": "Tuning",
+      "distance": "Distance (meters)",
+      "arrowCount": "Arrow count",
+      "score": "Score",
+      "maxScore": "Max possible score",
+      "duration": "Duration (minutes)",
+      "conditions": "Conditions",
+      "indoor": "Indoor",
+      "outdoor": "Outdoor",
+      "wind": "Wind",
+      "windNone": "No wind",
+      "windLight": "Light",
+      "windModerate": "Moderate",
+      "windStrong": "Strong",
+      "mentalStatePre": "Before session",
+      "mentalStatePost": "After session",
+      "focus": "Focus",
+      "anxiety": "Anxiety",
+      "confidence": "Confidence",
+      "satisfaction": "Satisfaction",
+      "notes": "Notes",
+      "notesPlaceholder": "What do you want to remember about this session?"
+    }
+  },
+  "exercises": {
+    "title": "Mental exercises",
+    "categories": {
+      "all": "All",
+      "breathing": "Breathing",
+      "focus": "Focus",
+      "visualization": "Visualization",
+      "recovery": "Recovery",
+      "precomp": "Pre-competition"
+    },
+    "player": {
+      "play": "Play",
+      "pause": "Pause",
+      "skip15f": "Forward 15s",
+      "skip15b": "Back 15s",
+      "completed": "Exercise completed"
+    }
+  },
+  "program": {
+    "title": "12-week program",
+    "subtitle": "Complete mental preparation for competition",
+    "start": "Start program",
+    "phases": {
+      "foundation": "Foundation",
+      "buildup": "Build-up",
+      "peak": "Peak"
+    },
+    "day": "Day {day}",
+    "week": "Week {week}",
+    "completed": "Completed",
+    "current": "Current",
+    "locked": "Locked",
+    "setup": {
+      "competitionDate": "Your target competition date",
+      "noCompetition": "I don't have a scheduled competition",
+      "confirm": "Confirm and start"
+    }
+  },
+  "routine": {
+    "title": "Pre-shot routine",
+    "builder": "Routine builder",
+    "steps": "Steps",
+    "addStep": "Add step",
+    "stepName": "Step name",
+    "stepDuration": "Duration (seconds)",
+    "stepCue": "Mental cue",
+    "totalDuration": "Total duration",
+    "practice": "Practice routine",
+    "save": "Save routine"
+  },
+  "competition": {
+    "title": "Competition mode",
+    "checklist": "Pre-competition checklist",
+    "breathReset": "Breath reset",
+    "endTimer": "End timer",
+    "debrief": "Post-competition debrief",
+    "debriefForm": {
+      "finalScore": "Final score",
+      "threeGoodThings": "Three good things",
+      "oneImprovement": "One thing to improve",
+      "overallMood": "Overall mood"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "stats": "Statistics",
+    "totalSessions": "Total sessions",
+    "totalExercises": "Exercises completed",
+    "totalMinutes": "Practice minutes",
+    "streak": "Current streak",
+    "settings": "Settings",
+    "language": "Language",
+    "notifications": "Notifications",
+    "dailyReminder": "Daily reminder",
+    "reminderTime": "Reminder time",
+    "logout": "Sign out",
+    "deleteAccount": "Delete account"
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "common": {
+    "appName": "Archer's Mind",
+    "tagline": "Antrenorul tău mental pentru tir cu arcul",
+    "save": "Salvează",
+    "cancel": "Anulează",
+    "delete": "Șterge",
+    "edit": "Editează",
+    "back": "Înapoi",
+    "next": "Mai departe",
+    "finish": "Finalizează",
+    "loading": "Se încarcă...",
+    "error": "A apărut o eroare",
+    "success": "Succes",
+    "confirm": "Confirmă",
+    "yes": "Da",
+    "no": "Nu"
+  },
+  "auth": {
+    "login": {
+      "title": "Bine ai revenit",
+      "subtitle": "Continuă-ți călătoria mentală",
+      "email": "Email",
+      "password": "Parolă",
+      "submit": "Autentificare",
+      "forgotPassword": "Ai uitat parola?",
+      "noAccount": "Nu ai cont?",
+      "createAccount": "Creează cont",
+      "googleSignIn": "Continuă cu Google"
+    },
+    "register": {
+      "title": "Începe călătoria",
+      "subtitle": "Creează-ți contul pentru a începe",
+      "name": "Nume",
+      "email": "Email",
+      "password": "Parolă",
+      "passwordConfirm": "Confirmă parola",
+      "submit": "Creează cont",
+      "hasAccount": "Ai deja cont?",
+      "loginLink": "Autentifică-te"
+    },
+    "forgotPassword": {
+      "title": "Recuperare parolă",
+      "subtitle": "Îți trimitem un link pe email",
+      "email": "Email",
+      "submit": "Trimite link",
+      "backToLogin": "Înapoi la autentificare",
+      "sent": "Am trimis linkul de recuperare pe email"
+    },
+    "errors": {
+      "invalidEmail": "Email invalid",
+      "passwordTooShort": "Parola trebuie să aibă minim 6 caractere",
+      "passwordMismatch": "Parolele nu se potrivesc",
+      "userNotFound": "Nu există un cont cu acest email",
+      "wrongPassword": "Parolă incorectă",
+      "emailInUse": "Acest email este deja folosit"
+    }
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Bine ai venit",
+      "subtitle": "Pregătirea mentală este 80% din performanța ta ca arcaș",
+      "start": "Să începem"
+    },
+    "language": {
+      "title": "Alege limba",
+      "romanian": "Română",
+      "english": "English"
+    },
+    "profile": {
+      "title": "Despre tine",
+      "skillLevel": "Nivelul tău",
+      "beginner": "Începător (până la 1 an)",
+      "intermediate": "Intermediar (1-3 ani)",
+      "advanced": "Avansat (3+ ani)",
+      "competitive": "Competitiv (particip la concursuri)",
+      "bowType": "Tipul arcului",
+      "recurve": "Recurve",
+      "compound": "Compound",
+      "barebow": "Barebow",
+      "traditional": "Tradițional",
+      "yearsOfPractice": "Ani de practică"
+    },
+    "goals": {
+      "title": "Obiectivele tale",
+      "subtitle": "Alege ce vrei să îmbunătățești (poți alege mai multe)",
+      "focus": "Concentrare și atenție",
+      "anxiety": "Gestionarea anxietății",
+      "confidence": "Încredere în sine",
+      "consistency": "Consistență",
+      "competition": "Performanță la concurs",
+      "recovery": "Recuperare după greșeli"
+    }
+  },
+  "nav": {
+    "today": "Azi",
+    "journal": "Jurnal",
+    "exercises": "Exerciții",
+    "program": "Program",
+    "routine": "Rutină",
+    "competition": "Concurs",
+    "profile": "Profil"
+  },
+  "today": {
+    "greeting": "Salut, {name}",
+    "todayPractice": "Practica zilei",
+    "startExercise": "Începe exercițiul",
+    "currentStreak": "{days} zile consecutive",
+    "programProgress": "Ziua {day} din 84",
+    "noActivity": "Nu ai nicio activitate astăzi"
+  },
+  "journal": {
+    "title": "Jurnal de sesiuni",
+    "newSession": "Sesiune nouă",
+    "noSessions": "Nu ai nicio sesiune înregistrată",
+    "startFirst": "Începe cu prima ta sesiune",
+    "form": {
+      "date": "Data",
+      "type": "Tipul sesiunii",
+      "training": "Antrenament",
+      "competition": "Concurs",
+      "tune": "Reglaj",
+      "distance": "Distanța (metri)",
+      "arrowCount": "Număr săgeți",
+      "score": "Scor",
+      "maxScore": "Scor maxim posibil",
+      "duration": "Durată (minute)",
+      "conditions": "Condiții",
+      "indoor": "Interior",
+      "outdoor": "Exterior",
+      "wind": "Vânt",
+      "windNone": "Fără vânt",
+      "windLight": "Ușor",
+      "windModerate": "Moderat",
+      "windStrong": "Puternic",
+      "mentalStatePre": "Înainte de sesiune",
+      "mentalStatePost": "După sesiune",
+      "focus": "Concentrare",
+      "anxiety": "Anxietate",
+      "confidence": "Încredere",
+      "satisfaction": "Satisfacție",
+      "notes": "Note libere",
+      "notesPlaceholder": "Ce vrei să-ți amintești despre această sesiune?"
+    }
+  },
+  "exercises": {
+    "title": "Exerciții mentale",
+    "categories": {
+      "all": "Toate",
+      "breathing": "Respirație",
+      "focus": "Concentrare",
+      "visualization": "Vizualizare",
+      "recovery": "Recuperare",
+      "precomp": "Pre-concurs"
+    },
+    "player": {
+      "play": "Redă",
+      "pause": "Pauză",
+      "skip15f": "Înainte 15s",
+      "skip15b": "Înapoi 15s",
+      "completed": "Exercițiu finalizat"
+    }
+  },
+  "program": {
+    "title": "Programul de 12 săptămâni",
+    "subtitle": "Pregătire mentală completă pentru concurs",
+    "start": "Începe programul",
+    "phases": {
+      "foundation": "Fundație",
+      "buildup": "Intensificare",
+      "peak": "Peak"
+    },
+    "day": "Ziua {day}",
+    "week": "Săptămâna {week}",
+    "completed": "Finalizată",
+    "current": "În curs",
+    "locked": "Blocată",
+    "setup": {
+      "competitionDate": "Data competiției tale țintă",
+      "noCompetition": "Nu am o competiție programată",
+      "confirm": "Confirmă și începe"
+    }
+  },
+  "routine": {
+    "title": "Rutină pre-shot",
+    "builder": "Constructor de rutină",
+    "steps": "Pași",
+    "addStep": "Adaugă pas",
+    "stepName": "Nume pas",
+    "stepDuration": "Durată (secunde)",
+    "stepCue": "Cue mental",
+    "totalDuration": "Durată totală",
+    "practice": "Practică rutina",
+    "save": "Salvează rutina"
+  },
+  "competition": {
+    "title": "Mod concurs",
+    "checklist": "Checklist pre-concurs",
+    "breathReset": "Reset respirație",
+    "endTimer": "Timer end",
+    "debrief": "Debrief post-concurs",
+    "debriefForm": {
+      "finalScore": "Scor final",
+      "threeGoodThings": "Trei lucruri bune",
+      "oneImprovement": "Un lucru de îmbunătățit",
+      "overallMood": "Starea generală"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "stats": "Statistici",
+    "totalSessions": "Total sesiuni",
+    "totalExercises": "Exerciții finalizate",
+    "totalMinutes": "Minute de practică",
+    "streak": "Streak curent",
+    "settings": "Setări",
+    "language": "Limbă",
+    "notifications": "Notificări",
+    "dailyReminder": "Reminder zilnic",
+    "reminderTime": "Ora reminder-ului",
+    "logout": "Deconectare",
+    "deleteAccount": "Șterge contul"
+  }
+}
