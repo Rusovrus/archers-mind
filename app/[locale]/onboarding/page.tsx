@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '@/hooks/useAuth';
 import { db } from '@/lib/firebase';
 import { Button } from '@/components/ui/Button';
@@ -41,12 +41,31 @@ export default function OnboardingPage() {
     if (!firebaseUser) return;
     setSaving(true);
     try {
-      await updateDoc(doc(db, 'users', firebaseUser.uid), {
+      await setDoc(doc(db, 'users', firebaseUser.uid), {
+        email: firebaseUser.email,
+        displayName: firebaseUser.displayName || 'Arcaș',
+        photoURL: firebaseUser.photoURL || null,
+        preferredLanguage: locale,
         onboardingCompleted: true,
-        'profile.skillLevel': skillLevel,
-        'profile.bowType': bowType,
-        'profile.goals': goals,
-      });
+        profile: {
+          skillLevel,
+          bowType,
+          yearsOfPractice: 0,
+          goals,
+        },
+        preferences: {
+          notificationsEnabled: true,
+          dailyReminderTime: '19:00',
+          streakCount: 0,
+        },
+        stats: {
+          totalSessions: 0,
+          totalExercisesCompleted: 0,
+          totalMinutesMeditation: 0,
+        },
+        createdAt: serverTimestamp(),
+        lastActiveAt: serverTimestamp(),
+      }, { merge: true });
       router.replace(`/${locale}/today`);
     } catch (e) {
       console.error(e);
