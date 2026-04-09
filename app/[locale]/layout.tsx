@@ -12,6 +12,9 @@ export const metadata = {
   title: "Archer's Mind",
   description: 'Antrenorul tău mental pentru tir cu arcul',
   manifest: '/manifest.json',
+};
+
+export const viewport = {
   themeColor: '#8B4513',
 };
 
