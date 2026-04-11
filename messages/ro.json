@@ -169,6 +169,7 @@
   },
   "exercises": {
     "title": "Exerciții mentale",
+    "subtitle": "Antrenează-ți mintea pentru performanță",
     "categories": {
       "all": "Toate",
       "breathing": "Respirație",
@@ -177,6 +178,25 @@
       "recovery": "Recuperare",
       "precomp": "Pre-concurs"
     },
+    "difficulty": {
+      "beginner": "Începător",
+      "intermediate": "Intermediar",
+      "advanced": "Avansat"
+    },
+    "duration": "{minutes} min",
+    "startExercise": "Începe exercițiul",
+    "timer": {
+      "remaining": "Timp rămas",
+      "start": "Start",
+      "pause": "Pauză",
+      "resume": "Continuă",
+      "reset": "Resetează",
+      "completed": "Exercițiu finalizat!",
+      "completedDesc": "Felicitări! Ai terminat exercițiul.",
+      "backToExercises": "Înapoi la exerciții",
+      "doAgain": "Repetă"
+    },
+    "featured": "Recomandate",
     "player": {
       "play": "Redă",
       "pause": "Pauză",

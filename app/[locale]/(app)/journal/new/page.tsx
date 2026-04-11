@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { useForm } from 'react-hook-form';
+import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Timestamp } from 'firebase/firestore';
@@ -67,7 +67,7 @@ export default function NewSessionPage() {
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(sessionSchema),
+    resolver: zodResolver(sessionSchema) as Resolver<FormData>,
     defaultValues: {
       date: today,
       type: 'training',

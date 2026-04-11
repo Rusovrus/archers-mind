@@ -169,6 +169,7 @@
   },
   "exercises": {
     "title": "Mental exercises",
+    "subtitle": "Train your mind for performance",
     "categories": {
       "all": "All",
       "breathing": "Breathing",
@@ -177,6 +178,25 @@
       "recovery": "Recovery",
       "precomp": "Pre-competition"
     },
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "duration": "{minutes} min",
+    "startExercise": "Start exercise",
+    "timer": {
+      "remaining": "Time remaining",
+      "start": "Start",
+      "pause": "Pause",
+      "resume": "Resume",
+      "reset": "Reset",
+      "completed": "Exercise completed!",
+      "completedDesc": "Congratulations! You finished the exercise.",
+      "backToExercises": "Back to exercises",
+      "doAgain": "Do again"
+    },
+    "featured": "Featured",
     "player": {
       "play": "Play",
       "pause": "Pause",
