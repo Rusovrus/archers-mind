@@ -211,6 +211,13 @@
     "title": "Programul de 12 săptămâni",
     "subtitle": "Pregătire mentală completă pentru concurs",
     "start": "Începe programul",
+    "notStarted": "Nu ai început încă programul de 12 săptămâni",
+    "notStartedDesc": "Un parcurs structurat de 84 de zile care te duce de la fundație până la vârful mental al concursului.",
+    "progressLabel": "{done}/{total} zile",
+    "currentDayLabel": "Ziua curentă",
+    "continueBtn": "Continuă de unde ai rămas",
+    "completedAll": "Felicitări! Ai finalizat programul.",
+    "weeksList": "Săptămâni",
     "phases": {
       "foundation": "Fundație",
       "buildup": "Intensificare",
@@ -222,9 +229,20 @@
     "current": "În curs",
     "locked": "Blocată",
     "setup": {
+      "title": "Configurează programul",
+      "subtitle": "Stabilește o dată țintă pentru a-ți alinia parcursul",
       "competitionDate": "Data competiției tale țintă",
       "noCompetition": "Nu am o competiție programată",
       "confirm": "Confirmă și începe"
+    },
+    "day_detail": {
+      "goal": "Obiectivul zilei",
+      "exercises": "Exerciții",
+      "estimatedTime": "Timp estimat",
+      "markComplete": "Marchează ziua ca finalizată",
+      "alreadyCompleted": "Această zi este deja finalizată",
+      "lockedMsg": "Finalizează zilele anterioare pentru a debloca această zi",
+      "dayCompleted": "Ziua a fost marcată ca finalizată"
     }
   },
   "routine": {

@@ -209,6 +209,13 @@
   },
   "program": {
     "title": "12-week program",
+    "notStarted": "You haven't started the 12-week program yet",
+    "notStartedDesc": "A structured 84-day journey from foundation to peak competition mindset.",
+    "progressLabel": "{done}/{total} days",
+    "currentDayLabel": "Current day",
+    "continueBtn": "Continue where you left off",
+    "completedAll": "Congratulations! You finished the program.",
+    "weeksList": "Weeks",
     "subtitle": "Complete mental preparation for competition",
     "start": "Start program",
     "phases": {
@@ -222,9 +229,20 @@
     "current": "Current",
     "locked": "Locked",
     "setup": {
+      "title": "Set up the program",
+      "subtitle": "Set a target date to align your journey",
       "competitionDate": "Your target competition date",
       "noCompetition": "I don't have a scheduled competition",
       "confirm": "Confirm and start"
+    },
+    "day_detail": {
+      "goal": "Goal of the day",
+      "exercises": "Exercises",
+      "estimatedTime": "Estimated time",
+      "markComplete": "Mark day as complete",
+      "alreadyCompleted": "This day is already completed",
+      "lockedMsg": "Finish earlier days to unlock this one",
+      "dayCompleted": "Day marked as completed"
     }
   },
   "routine": {
