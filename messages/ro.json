@@ -110,7 +110,9 @@
     "noActivity": "Nu ai nicio activitate astăzi",
     "newSession": "Sesiune nouă",
     "todaySessions": "Sesiunile de azi",
-    "noTodaySessions": "Nicio sesiune azi"
+    "noTodaySessions": "Nicio sesiune azi",
+    "dailyExercise": "Exercițiul de azi",
+    "dailyExerciseDone": "Felicitări! Ai finalizat exercițiul de azi."
   },
   "journal": {
     "title": "Jurnal de sesiuni",

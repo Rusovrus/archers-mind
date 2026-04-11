@@ -5,7 +5,10 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { ArrowLeft, Play, Pause, RotateCcw, Check } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { useAuth } from '@/hooks/useAuth';
 import { getExercise } from '@/lib/exercises';
+import { saveCompletion } from '@/lib/exerciseCompletions';
 import { Exercise } from '@/types/exercise';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
@@ -33,6 +36,7 @@ function formatTime(seconds: number): string {
 type TimerState = 'idle' | 'running' | 'paused' | 'completed';
 
 export default function ExerciseDetailPage() {
+  const { firebaseUser } = useAuth();
   const params = useParams();
   const locale = (params.locale as string) || 'ro';
   const exerciseId = params.id as string;
@@ -43,6 +47,7 @@ export default function ExerciseDetailPage() {
   const [timerState, setTimerState] = useState<TimerState>('idle');
   const [timeLeft, setTimeLeft] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const savedRef = useRef(false);
 
   useEffect(() => {
     const ex = getExercise(exerciseId);
@@ -60,6 +65,7 @@ export default function ExerciseDetailPage() {
   const startTimer = useCallback(() => {
     clearTimer();
     setTimerState('running');
+    savedRef.current = false;
     intervalRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -80,12 +86,29 @@ export default function ExerciseDetailPage() {
   const resetTimer = useCallback(() => {
     clearTimer();
     setTimerState('idle');
+    savedRef.current = false;
     if (exercise) setTimeLeft(exercise.duration);
   }, [clearTimer, exercise]);
 
   useEffect(() => {
     return () => clearTimer();
   }, [clearTimer]);
+
+  // Persist completion once when timer finishes
+  useEffect(() => {
+    if (timerState !== 'completed' || !firebaseUser || !exercise || savedRef.current) {
+      return;
+    }
+    savedRef.current = true;
+    saveCompletion(firebaseUser.uid, {
+      exerciseId: exercise.id,
+      category: exercise.category,
+      duration: exercise.duration,
+    }).catch(() => {
+      toast.error(tc('error'));
+      savedRef.current = false;
+    });
+  }, [timerState, firebaseUser, exercise, tc]);
 
   if (!exercise) {
     return (

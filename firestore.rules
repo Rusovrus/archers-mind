@@ -32,6 +32,11 @@ service cloud.firestore {
       match /routines/{routineId} {
         allow read, write: if isOwner(userId);
       }
+
+      // Exercise completions subcollection
+      match /exerciseCompletions/{completionId} {
+        allow read, write: if isOwner(userId);
+      }
     }
 
     // Exercises - global, read-only for authenticated users

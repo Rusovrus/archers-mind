@@ -110,7 +110,9 @@
     "noActivity": "No activity yet today",
     "newSession": "New session",
     "todaySessions": "Today's sessions",
-    "noTodaySessions": "No sessions today"
+    "noTodaySessions": "No sessions today",
+    "dailyExercise": "Today's exercise",
+    "dailyExerciseDone": "Well done! You finished today's exercise."
   },
   "journal": {
     "title": "Session journal",

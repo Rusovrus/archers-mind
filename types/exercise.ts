@@ -32,6 +32,14 @@ export interface Exercise {
   featured: boolean;
 }
 
+export interface ExerciseCompletion {
+  id: string;
+  exerciseId: string;
+  category: ExerciseCategory;
+  duration: number; // seconds actually practiced
+  completedAt: Timestamp;
+}
+
 export type ProgramPhase = 'foundation' | 'buildup' | 'peak';
 
 export interface ProgramDay {
