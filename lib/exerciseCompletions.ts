@@ -12,6 +12,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { touchStreak } from '@/lib/streak';
 import { ExerciseCompletion, ExerciseCategory } from '@/types/exercise';
 
 function completionsRef(uid: string) {
@@ -38,6 +39,8 @@ export async function saveCompletion(
     'stats.totalMinutesMeditation': increment(Math.round(data.duration / 60)),
     lastActiveAt: serverTimestamp(),
   });
+
+  await touchStreak(uid);
 
   return ref.id;
 }

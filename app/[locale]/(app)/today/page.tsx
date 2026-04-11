@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Plus, Clock, Check, ChevronRight } from 'lucide-react';
+import { Plus, Clock, Check, ChevronRight, Flame } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { getTodaySessions } from '@/lib/sessions';
 import { getTodayCompletions } from '@/lib/exerciseCompletions';
@@ -49,6 +49,7 @@ export default function TodayPage() {
   const [todayCompletions, setTodayCompletions] = useState<ExerciseCompletion[]>([]);
 
   const name = user?.displayName?.split(' ')[0] || 'Arcaș';
+  const streak = user?.preferences?.streakCount ?? 0;
 
   const dailyExercise = useMemo(() => pickDailyExercise(getFeaturedExercises()), []);
   const dailyDone = useMemo(
@@ -68,13 +69,21 @@ export default function TodayPage() {
 
   return (
     <div className="px-4 py-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-stone-900">
-          {t('greeting', { name })}
-        </h1>
-        <p className="mt-1 text-stone-500">
-          {locale === 'ro' ? 'Ce facem azi?' : "What's the plan today?"}
-        </p>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold text-stone-900">
+            {t('greeting', { name })}
+          </h1>
+          <p className="mt-1 text-stone-500">
+            {locale === 'ro' ? 'Ce facem azi?' : "What's the plan today?"}
+          </p>
+        </div>
+        {streak > 0 && (
+          <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1.5 text-amber-800">
+            <Flame size={16} />
+            <span className="text-sm font-semibold">{t('currentStreak', { days: streak })}</span>
+          </div>
+        )}
       </div>
 
       {/* Daily exercise */}

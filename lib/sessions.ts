@@ -14,6 +14,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { touchStreak } from '@/lib/streak';
 import { Session, NewSession } from '@/types/session';
 
 function sessionsRef(uid: string) {
@@ -33,6 +34,8 @@ export async function createSession(uid: string, data: NewSession): Promise<stri
     'stats.totalSessions': increment(1),
     lastActiveAt: serverTimestamp(),
   });
+
+  await touchStreak(uid);
 
   return ref.id;
 }
