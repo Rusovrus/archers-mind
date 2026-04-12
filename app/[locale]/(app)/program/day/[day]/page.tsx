@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { ArrowLeft, Check, Lock, Clock, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Check, Lock, Clock, ChevronRight, MessageSquare } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -12,12 +12,14 @@ import {
   getProgramDay,
   completeDay,
   isDayAccessible,
+  saveReflection,
 } from '@/lib/program';
 import { getExercise } from '@/lib/exercises';
 import {
   ProgramDay,
   ProgramProgress,
   ProgramPhase,
+  DayReflection,
   Exercise,
 } from '@/types/exercise';
 import { Button } from '@/components/ui/Button';
@@ -50,6 +52,9 @@ export default function ProgramDayPage() {
   const [progress, setProgress] = useState<ProgramProgress | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [reflectionNotes, setReflectionNotes] = useState('');
+  const [reflectionRating, setReflectionRating] = useState(5);
+  const [savingReflection, setSavingReflection] = useState(false);
 
   const programDay: ProgramDay | null = Number.isFinite(dayNumber)
     ? getProgramDay(dayNumber)
@@ -70,6 +75,23 @@ export default function ProgramDayPage() {
 
   const isCompleted = !!progress?.completedDays.includes(dayNumber);
   const accessible = isDayAccessible(progress, dayNumber);
+  const existingReflection: DayReflection | null =
+    progress?.dayReflections?.[String(dayNumber)] ?? null;
+
+  const handleSaveReflection = async () => {
+    if (!firebaseUser || !reflectionNotes.trim()) return;
+    setSavingReflection(true);
+    try {
+      await saveReflection(firebaseUser.uid, dayNumber, reflectionNotes.trim(), reflectionRating);
+      toast.success(td('reflectionSaved'));
+      const updated = await getProgress(firebaseUser.uid);
+      setProgress(updated);
+    } catch {
+      toast.error(tc('error'));
+    } finally {
+      setSavingReflection(false);
+    }
+  };
 
   const handleComplete = async () => {
     if (!firebaseUser || !programDay || isCompleted) return;
@@ -221,6 +243,112 @@ export default function ProgramDayPage() {
         <Button onClick={handleComplete} loading={submitting}>
           {td('markComplete')}
         </Button>
+      )}
+
+      {/* Reflection — only for completed days */}
+      {isCompleted && (
+        <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm space-y-4">
+          <div>
+            <p className="text-sm font-semibold text-stone-900">{td('reflection')}</p>
+            <p className="text-xs text-stone-400 mt-0.5">{td('reflectionSubtitle')}</p>
+          </div>
+
+          {existingReflection ? (
+            /* Saved reflection — read-only */
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 text-amber-800">
+                  <MessageSquare size={14} />
+                </div>
+                <p className="text-xs font-medium text-stone-500">{td('yourReflection')}</p>
+              </div>
+              <p className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap">
+                {existingReflection.notes}
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="flex gap-0.5">
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <div
+                      key={i}
+                      className={cn(
+                        'h-2 w-4 rounded-sm',
+                        i < existingReflection.rating ? 'bg-amber-500' : 'bg-stone-100'
+                      )}
+                    />
+                  ))}
+                </div>
+                <span className="text-xs font-medium text-stone-500">
+                  {td('yourRating', { value: existingReflection.rating })}
+                </span>
+              </div>
+            </div>
+          ) : (
+            /* Reflection form */
+            <div className="space-y-4">
+              {/* Prompts */}
+              {programDay.reflectionPrompts[locale as 'ro' | 'en'].length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-xs font-medium uppercase tracking-wide text-stone-400">
+                    {td('reflectionPrompts')}
+                  </p>
+                  <ul className="space-y-1.5">
+                    {programDay.reflectionPrompts[locale as 'ro' | 'en'].map((prompt, i) => (
+                      <li key={i} className="flex gap-2 text-sm text-stone-600">
+                        <span className="text-amber-500 mt-0.5">&#8227;</span>
+                        {prompt}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Notes textarea */}
+              <textarea
+                value={reflectionNotes}
+                onChange={(e) => setReflectionNotes(e.target.value)}
+                placeholder={td('notesPlaceholder')}
+                rows={4}
+                className="w-full rounded-lg border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 resize-none"
+              />
+
+              {/* Rating */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-medium text-stone-500">{td('rating')}</p>
+                  <span className="text-sm font-semibold text-amber-800">
+                    {td('ratingLabel', { value: reflectionRating })}
+                  </span>
+                </div>
+                <div className="flex gap-1">
+                  {Array.from({ length: 10 }, (_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => setReflectionRating(i + 1)}
+                      className={cn(
+                        'flex-1 h-9 rounded-md text-xs font-medium transition-colors',
+                        i + 1 <= reflectionRating
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-stone-100 text-stone-400 hover:bg-stone-200'
+                      )}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Save button */}
+              <Button
+                onClick={handleSaveReflection}
+                loading={savingReflection}
+                disabled={!reflectionNotes.trim()}
+              >
+                {td('saveReflection')}
+              </Button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

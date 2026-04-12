@@ -31,6 +31,64 @@ interface WeekTemplate {
   estimatedMinutesPerDay: number;
 }
 
+// Reflection prompts per phase — each day picks 2 based on day number rotation
+const REFLECTION_PROMPTS: Record<ProgramPhase, { ro: string[]; en: string[] }> = {
+  foundation: {
+    ro: [
+      'Ce ai observat despre respirația ta în timpul exercițiului de azi?',
+      'Cum te-ai simțit înainte vs. după exercițiu?',
+      'Ce gânduri ți-au distras atenția și cum le-ai gestionat?',
+      'Care a fost momentul în care te-ai simțit cel mai concentrat?',
+      'Ce ai învățat azi despre propria ta minte?',
+      'Cum poți aplica ceea ce ai practicat azi la următoarea tragere?',
+    ],
+    en: [
+      'What did you notice about your breathing during today\'s exercise?',
+      'How did you feel before vs. after the exercise?',
+      'What thoughts distracted you and how did you handle them?',
+      'When did you feel most focused?',
+      'What did you learn today about your own mind?',
+      'How can you apply what you practiced today to your next shooting session?',
+    ],
+  },
+  buildup: {
+    ro: [
+      'Cum reacționezi când simți presiune în timpul exercițiului?',
+      'Ce strategie mentală a funcționat cel mai bine azi?',
+      'Ai reușit să menții concentrarea pe tot parcursul? Ce te-a ajutat?',
+      'Cum a fost vizualizarea ta azi — clară sau neclară? De ce?',
+      'Ce element al exercițiului vrei să îmbunătățești mâine?',
+      'Cum poți folosi ce ai practicat azi într-un moment de presiune la concurs?',
+    ],
+    en: [
+      'How do you react when you feel pressure during the exercise?',
+      'Which mental strategy worked best today?',
+      'Were you able to maintain focus throughout? What helped?',
+      'How was your visualization today — clear or unclear? Why?',
+      'What element of the exercise do you want to improve tomorrow?',
+      'How can you use what you practiced today in a pressure moment at competition?',
+    ],
+  },
+  peak: {
+    ro: [
+      'Te simți pregătit mental pentru concurs? Ce îți lipsește?',
+      'Cum arată rutina ta pre-tragere acum comparativ cu săptămâna 1?',
+      'Ce faci când apare o gândire negativă în timpul tragerii?',
+      'Care este nivelul tău de încredere de la 1 la 10? Ce l-ar crește?',
+      'Descrie cum arată "zona" pentru tine — ce simți când ești complet concentrat?',
+      'Ce mesaj ai pentru tine de la concurs? Scrie-l aici.',
+    ],
+    en: [
+      'Do you feel mentally ready for competition? What\'s missing?',
+      'How does your pre-shot routine look now compared to week 1?',
+      'What do you do when a negative thought appears during shooting?',
+      'What\'s your confidence level from 1 to 10? What would increase it?',
+      'Describe what "the zone" looks like for you — what do you feel when fully focused?',
+      'What message do you have for yourself at competition? Write it here.',
+    ],
+  },
+};
+
 const WEEK_TEMPLATES: WeekTemplate[] = [
   {
     week: 1,
@@ -213,7 +271,22 @@ export function getProgramDay(dayNumber: number): ProgramDay | null {
     goal: template.goal,
     exerciseIds,
     estimatedMinutes: template.estimatedMinutesPerDay,
-    reflectionPrompts: { ro: [], en: [] },
+    reflectionPrompts: getReflectionPrompts(template.phase, dayNumber),
+  };
+}
+
+function getReflectionPrompts(
+  phase: ProgramPhase,
+  dayNumber: number
+): { ro: string[]; en: string[] } {
+  const pool = REFLECTION_PROMPTS[phase];
+  const count = pool.ro.length;
+  // Pick 2 prompts deterministically based on day number
+  const i1 = (dayNumber - 1) % count;
+  const i2 = (i1 + 1) % count;
+  return {
+    ro: [pool.ro[i1], pool.ro[i2]],
+    en: [pool.en[i1], pool.en[i2]],
   };
 }
 
@@ -281,4 +354,22 @@ export function isDayAccessible(
   if (dayNumber < 1 || dayNumber > TOTAL_DAYS) return false;
   if (progress.completedDays.includes(dayNumber)) return true;
   return dayNumber <= progress.currentDay;
+}
+
+export async function saveReflection(
+  uid: string,
+  dayNumber: number,
+  notes: string,
+  rating: number
+): Promise<void> {
+  const ref = progressRef(uid);
+  await updateDoc(ref, {
+    [`dayReflections.${dayNumber}`]: {
+      completed: true,
+      notes,
+      rating,
+      completedAt: serverTimestamp(),
+    },
+    lastActiveAt: serverTimestamp(),
+  });
 }

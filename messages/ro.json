@@ -242,7 +242,17 @@
       "markComplete": "Marchează ziua ca finalizată",
       "alreadyCompleted": "Această zi este deja finalizată",
       "lockedMsg": "Finalizează zilele anterioare pentru a debloca această zi",
-      "dayCompleted": "Ziua a fost marcată ca finalizată"
+      "dayCompleted": "Ziua a fost marcată ca finalizată",
+      "reflection": "Reflecție",
+      "reflectionSubtitle": "Ia un moment să reflectezi asupra practicii de azi",
+      "reflectionPrompts": "Întrebări de reflecție",
+      "notesPlaceholder": "Scrie gândurile tale aici...",
+      "rating": "Cum a fost sesiunea de azi?",
+      "ratingLabel": "{value}/10",
+      "saveReflection": "Salvează reflecția",
+      "reflectionSaved": "Reflecția a fost salvată",
+      "yourReflection": "Reflecția ta",
+      "yourRating": "Evaluare: {value}/10"
     }
   },
   "routine": {

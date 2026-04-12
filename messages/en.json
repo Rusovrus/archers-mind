@@ -242,7 +242,17 @@
       "markComplete": "Mark day as complete",
       "alreadyCompleted": "This day is already completed",
       "lockedMsg": "Finish earlier days to unlock this one",
-      "dayCompleted": "Day marked as completed"
+      "dayCompleted": "Day marked as completed",
+      "reflection": "Reflection",
+      "reflectionSubtitle": "Take a moment to reflect on today's practice",
+      "reflectionPrompts": "Reflection questions",
+      "notesPlaceholder": "Write your thoughts here...",
+      "rating": "How was today's session?",
+      "ratingLabel": "{value}/10",
+      "saveReflection": "Save reflection",
+      "reflectionSaved": "Reflection saved",
+      "yourReflection": "Your reflection",
+      "yourRating": "Rating: {value}/10"
     }
   },
   "routine": {
