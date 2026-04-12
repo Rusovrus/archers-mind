@@ -112,7 +112,13 @@
     "todaySessions": "Sesiunile de azi",
     "noTodaySessions": "Nicio sesiune azi",
     "dailyExercise": "Exercițiul de azi",
-    "dailyExerciseDone": "Felicitări! Ai finalizat exercițiul de azi."
+    "dailyExerciseDone": "Felicitări! Ai finalizat exercițiul de azi.",
+    "subtitle": "Ce facem azi?",
+    "yourProfile": "Profilul tău",
+    "level": "Nivel",
+    "bow": "Arc",
+    "goals": "Obiective",
+    "arrows": "săgeți"
   },
   "journal": {
     "title": "Jurnal de sesiuni",
@@ -391,6 +397,8 @@
     "notifications": "Notificări",
     "dailyReminder": "Reminder zilnic",
     "reminderTime": "Ora reminder-ului",
+    "editProfile": "Editează profilul",
+    "profileUpdated": "Profilul a fost actualizat",
     "logout": "Deconectare",
     "deleteAccount": "Șterge contul"
   }

@@ -112,7 +112,13 @@
     "todaySessions": "Today's sessions",
     "noTodaySessions": "No sessions today",
     "dailyExercise": "Today's exercise",
-    "dailyExerciseDone": "Well done! You finished today's exercise."
+    "dailyExerciseDone": "Well done! You finished today's exercise.",
+    "subtitle": "What's the plan today?",
+    "yourProfile": "Your profile",
+    "level": "Level",
+    "bow": "Bow",
+    "goals": "Goals",
+    "arrows": "arrows"
   },
   "journal": {
     "title": "Session journal",
@@ -391,6 +397,8 @@
     "notifications": "Notifications",
     "dailyReminder": "Daily reminder",
     "reminderTime": "Reminder time",
+    "editProfile": "Edit profile",
+    "profileUpdated": "Profile updated",
     "logout": "Sign out",
     "deleteAccount": "Delete account"
   }

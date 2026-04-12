@@ -42,6 +42,7 @@ export default function TodayPage() {
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations('today');
+  const tc = useTranslations('common');
   const tf = useTranslations('journal.form');
   const tr = useTranslations('routine');
   const tcomp = useTranslations('competition');
@@ -77,7 +78,7 @@ export default function TodayPage() {
             {t('greeting', { name })}
           </h1>
           <p className="mt-1 text-stone-500">
-            {locale === 'ro' ? 'Ce facem azi?' : "What's the plan today?"}
+            {t('subtitle')}
           </p>
         </div>
         {streak > 0 && (
@@ -171,7 +172,7 @@ export default function TodayPage() {
 
         {loadingSessions ? (
           <div className="rounded-xl border border-stone-200 bg-white p-4">
-            <p className="text-sm text-stone-400">{locale === 'ro' ? 'Se încarcă...' : 'Loading...'}</p>
+            <p className="text-sm text-stone-400">{tc('loading')}</p>
           </div>
         ) : todaySessions.length === 0 ? (
           <div className="rounded-xl border border-stone-200 bg-white p-5 text-center">
@@ -194,7 +195,7 @@ export default function TodayPage() {
                       {tf(session.type)}
                     </span>
                     <p className="mt-1 text-sm text-stone-600">
-                      {session.distance}m &middot; {session.arrowCount} {locale === 'ro' ? 'săgeți' : 'arrows'} &middot; {session.duration} min
+                      {session.distance}m &middot; {session.arrowCount} {t('arrows')} &middot; {session.duration} min
                     </p>
                   </div>
                   <p className="text-lg font-bold text-stone-900">{pct}%</p>
@@ -208,19 +209,19 @@ export default function TodayPage() {
       {/* Profile card */}
       <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
         <p className="text-xs font-medium uppercase tracking-wide text-stone-400">
-          {locale === 'ro' ? 'Profilul tău' : 'Your profile'}
+          {t('yourProfile')}
         </p>
         <div className="mt-3 space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-stone-500">{locale === 'ro' ? 'Nivel' : 'Level'}</span>
+            <span className="text-stone-500">{t('level')}</span>
             <span className="font-medium text-stone-900 capitalize">{user?.profile?.skillLevel}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-stone-500">{locale === 'ro' ? 'Arc' : 'Bow'}</span>
+            <span className="text-stone-500">{t('bow')}</span>
             <span className="font-medium text-stone-900 capitalize">{user?.profile?.bowType}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-stone-500">{locale === 'ro' ? 'Obiective' : 'Goals'}</span>
+            <span className="text-stone-500">{t('goals')}</span>
             <span className="font-medium text-stone-900">{user?.profile?.goals?.length || 0}</span>
           </div>
         </div>

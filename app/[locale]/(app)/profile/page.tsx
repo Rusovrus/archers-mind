@@ -153,6 +153,14 @@ export default function ProfilePage() {
         </div>
       </div>
 
+      {/* Edit profile link */}
+      <Link
+        href={`/${locale}/profile/edit`}
+        className="flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white p-3 text-sm font-medium text-amber-800 shadow-sm hover:bg-stone-50 transition-colors"
+      >
+        {t('editProfile')}
+      </Link>
+
       {/* Stats */}
       <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
         <p className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-3">
