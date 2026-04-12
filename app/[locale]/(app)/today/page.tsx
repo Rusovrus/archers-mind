@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Plus, Clock, Check, ChevronRight, Flame } from 'lucide-react';
+import { Plus, Clock, Check, ChevronRight, Flame, Target } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { getTodaySessions } from '@/lib/sessions';
 import { getTodayCompletions } from '@/lib/exerciseCompletions';
@@ -43,6 +43,7 @@ export default function TodayPage() {
   const locale = params.locale as string;
   const t = useTranslations('today');
   const tf = useTranslations('journal.form');
+  const tr = useTranslations('routine');
 
   const [todaySessions, setTodaySessions] = useState<Session[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
@@ -121,6 +122,21 @@ export default function TodayPage() {
           )}
         </div>
       )}
+
+      {/* Pre-shot routine */}
+      <Link
+        href={`/${locale}/routine`}
+        className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm hover:bg-stone-50 transition-colors"
+      >
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-50">
+          <Target size={22} className="text-amber-800" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-medium text-stone-900">{tr('todayCard')}</p>
+          <p className="mt-0.5 text-xs text-stone-400">{tr('todayCardDesc')}</p>
+        </div>
+        <ChevronRight size={18} className="text-stone-300" />
+      </Link>
 
       {/* New session button */}
       <Link
