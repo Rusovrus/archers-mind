@@ -1,7 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { TrendingUp, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 
@@ -9,6 +11,7 @@ export default function ProfilePage() {
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations('profile');
+  const tp = useTranslations('progress');
   const { user, signOut } = useAuth();
 
   return (
@@ -39,6 +42,21 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+
+      {/* Progress link */}
+      <Link
+        href={`/${locale}/progress`}
+        className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm hover:bg-stone-50 transition-colors"
+      >
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50">
+          <TrendingUp size={20} className="text-amber-800" />
+        </div>
+        <div className="flex-1">
+          <p className="font-medium text-stone-900">{tp('viewProgress')}</p>
+          <p className="text-xs text-stone-400">{tp('subtitle')}</p>
+        </div>
+        <ChevronRight size={18} className="text-stone-300" />
+      </Link>
 
       <Button variant="ghost" onClick={signOut} className="text-red-600 hover:bg-red-50">
         {t('logout')}
