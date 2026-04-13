@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
@@ -10,6 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { getExercise } from '@/lib/exercises';
 import { saveCompletion } from '@/lib/exerciseCompletions';
 import { Exercise } from '@/types/exercise';
+import { AudioPlayer } from '@/components/AudioPlayer';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -124,6 +125,18 @@ export default function ExerciseDetailPage() {
   const minutes = Math.round(exercise.duration / 60);
   const progress = exercise.duration > 0 ? ((exercise.duration - timeLeft) / exercise.duration) * 100 : 0;
 
+  // Guided steps — compute which step to show based on elapsed time
+  const steps = exercise.steps;
+  const currentStepIndex = useMemo(() => {
+    if (!steps || steps.length === 0) return -1;
+    const elapsed = exercise.duration - timeLeft;
+    const stepDuration = exercise.duration / steps.length;
+    const idx = Math.floor(elapsed / stepDuration);
+    return Math.min(idx, steps.length - 1);
+  }, [steps, exercise.duration, timeLeft]);
+
+  const audioSrc = exercise.audioUrl[locale as 'ro' | 'en'];
+
   return (
     <div className="px-4 py-6 space-y-6">
       {/* Header */}
@@ -159,6 +172,9 @@ export default function ExerciseDetailPage() {
           {exercise.description[locale as 'ro' | 'en']}
         </p>
       </div>
+
+      {/* Audio player — only when audio URL exists */}
+      {audioSrc && <AudioPlayer src={audioSrc} />}
 
       {/* Timer */}
       <div className="rounded-xl border border-stone-200 bg-white p-6 shadow-sm text-center space-y-5">
@@ -215,6 +231,18 @@ export default function ExerciseDetailPage() {
                 <span className="text-xs text-stone-400">{t('timer.remaining')}</span>
               </div>
             </div>
+
+            {/* Guided step instruction */}
+            {steps && steps.length > 0 && currentStepIndex >= 0 && timerState !== 'idle' && (
+              <div className="space-y-1 transition-opacity duration-500">
+                <p className="text-xs font-medium text-amber-800">
+                  {t('guidedStep', { current: currentStepIndex + 1, total: steps.length })}
+                </p>
+                <p className="text-sm leading-relaxed text-stone-700">
+                  {steps[currentStepIndex][locale as 'ro' | 'en']}
+                </p>
+              </div>
+            )}
 
             {/* Controls */}
             <div className="flex items-center justify-center gap-4">

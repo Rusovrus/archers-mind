@@ -204,6 +204,7 @@
       "backToExercises": "Înapoi la exerciții",
       "doAgain": "Repetă"
     },
+    "guidedStep": "Pas {current} din {total}",
     "featured": "Recomandate",
     "player": {
       "play": "Redă",

@@ -204,6 +204,7 @@
       "backToExercises": "Back to exercises",
       "doAgain": "Do again"
     },
+    "guidedStep": "Step {current} of {total}",
     "featured": "Featured",
     "player": {
       "play": "Play",

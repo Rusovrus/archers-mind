@@ -27,6 +27,7 @@ export interface Exercise {
     en: string;
   };
   transcript?: LocalizedString;
+  steps?: LocalizedString[]; // guided instructions, evenly distributed across duration
   tags: string[];
   order: number;
   featured: boolean;
