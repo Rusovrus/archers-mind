@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { TrendingUp, ChevronRight, Camera, Trash2, Loader2 } from 'lucide-react';
+import { TrendingUp, ChevronRight, Camera, Trash2, Loader2, Settings } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { uploadProfilePhoto, deleteProfilePhoto } from '@/lib/profilePhoto';
@@ -153,13 +153,22 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Edit profile link */}
-      <Link
-        href={`/${locale}/profile/edit`}
-        className="flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white p-3 text-sm font-medium text-amber-800 shadow-sm hover:bg-stone-50 transition-colors"
-      >
-        {t('editProfile')}
-      </Link>
+      {/* Edit profile + Settings links */}
+      <div className="grid grid-cols-2 gap-3">
+        <Link
+          href={`/${locale}/profile/edit`}
+          className="flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white p-3 text-sm font-medium text-amber-800 shadow-sm hover:bg-stone-50 transition-colors"
+        >
+          {t('editProfile')}
+        </Link>
+        <Link
+          href={`/${locale}/profile/settings`}
+          className="flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white p-3 text-sm font-medium text-amber-800 shadow-sm hover:bg-stone-50 transition-colors"
+        >
+          <Settings size={16} />
+          {t('settings')}
+        </Link>
+      </div>
 
       {/* Stats */}
       <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
