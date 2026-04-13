@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { TrendingUp, ChevronRight, Camera, Trash2, Loader2, Settings } from 'lucide-react';
+import { TrendingUp, ChevronRight, Camera, Trash2, Loader2, Settings, Trophy } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { uploadProfilePhoto, deleteProfilePhoto } from '@/lib/profilePhoto';
@@ -191,20 +191,36 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Progress link */}
-      <Link
-        href={`/${locale}/progress`}
-        className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm hover:bg-stone-50 transition-colors"
-      >
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50">
-          <TrendingUp size={20} className="text-amber-800" />
-        </div>
-        <div className="flex-1">
-          <p className="font-medium text-stone-900">{tp('viewProgress')}</p>
-          <p className="text-xs text-stone-400">{tp('subtitle')}</p>
-        </div>
-        <ChevronRight size={18} className="text-stone-300" />
-      </Link>
+      {/* Progress + Achievements links */}
+      <div className="space-y-3">
+        <Link
+          href={`/${locale}/progress`}
+          className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm hover:bg-stone-50 transition-colors"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50">
+            <TrendingUp size={20} className="text-amber-800" />
+          </div>
+          <div className="flex-1">
+            <p className="font-medium text-stone-900">{tp('viewProgress')}</p>
+            <p className="text-xs text-stone-400">{tp('subtitle')}</p>
+          </div>
+          <ChevronRight size={18} className="text-stone-300" />
+        </Link>
+
+        <Link
+          href={`/${locale}/profile/achievements`}
+          className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm hover:bg-stone-50 transition-colors"
+        >
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50">
+            <Trophy size={20} className="text-amber-800" />
+          </div>
+          <div className="flex-1">
+            <p className="font-medium text-stone-900">{t('achievements')}</p>
+            <p className="text-xs text-stone-400">{t('achievementsDesc')}</p>
+          </div>
+          <ChevronRight size={18} className="text-stone-300" />
+        </Link>
+      </div>
 
       <Button variant="ghost" onClick={signOut} className="text-red-600 hover:bg-red-50">
         {t('logout')}

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Plus, Clock, Check, ChevronRight, Flame, Target, Trophy } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useAchievementCheck } from '@/hooks/useAchievementCheck';
 import { getTodaySessions } from '@/lib/sessions';
 import { getTodayCompletions } from '@/lib/exerciseCompletions';
 import { getFeaturedExercises } from '@/lib/exercises';
@@ -46,6 +47,8 @@ export default function TodayPage() {
   const tf = useTranslations('journal.form');
   const tr = useTranslations('routine');
   const tcomp = useTranslations('competition');
+
+  useAchievementCheck(locale);
 
   const [todaySessions, setTodaySessions] = useState<Session[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
