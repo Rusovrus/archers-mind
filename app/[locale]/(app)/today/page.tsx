@@ -4,12 +4,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Plus, Clock, Check, ChevronRight, Flame, Target, Trophy } from 'lucide-react';
+import { Plus, Clock, Check, ChevronRight, Flame, Target, Trophy, Lightbulb, Activity } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useAchievementCheck } from '@/hooks/useAchievementCheck';
 import { getTodaySessions } from '@/lib/sessions';
 import { getTodayCompletions } from '@/lib/exerciseCompletions';
 import { getFeaturedExercises } from '@/lib/exercises';
+import { calculateReadiness, ReadinessData } from '@/lib/readiness';
 import { scorePercentage } from '@/lib/utils';
 import { Session } from '@/types/session';
 import { Exercise, ExerciseCompletion } from '@/types/exercise';
@@ -53,6 +54,7 @@ export default function TodayPage() {
   const [todaySessions, setTodaySessions] = useState<Session[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [todayCompletions, setTodayCompletions] = useState<ExerciseCompletion[]>([]);
+  const [readiness, setReadiness] = useState<ReadinessData | null>(null);
 
   const name = user?.displayName?.split(' ')[0] || 'Arcaș';
   const streak = user?.preferences?.streakCount ?? 0;
@@ -73,6 +75,11 @@ export default function TodayPage() {
     getTodayCompletions(firebaseUser.uid).then(setTodayCompletions).catch(() => {});
   }, [firebaseUser]);
 
+  useEffect(() => {
+    if (!firebaseUser || !user) return;
+    calculateReadiness(firebaseUser.uid, user).then(setReadiness).catch(() => {});
+  }, [firebaseUser, user]);
+
   return (
     <div className="px-4 py-6 space-y-6">
       <div className="flex items-start justify-between gap-3">
@@ -91,6 +98,71 @@ export default function TodayPage() {
           </div>
         )}
       </div>
+
+      {/* Readiness score + Weekly summary */}
+      {readiness && (
+        <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center gap-5">
+            {/* Score ring */}
+            <div className="relative shrink-0 h-20 w-20">
+              <svg className="h-20 w-20 -rotate-90" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="34" fill="none" stroke="#e7e5e4" strokeWidth="6" />
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="34"
+                  fill="none"
+                  stroke={readiness.score >= 70 ? '#16a34a' : readiness.score >= 40 ? '#d97706' : '#dc2626'}
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeDasharray={2 * Math.PI * 34}
+                  strokeDashoffset={2 * Math.PI * 34 * (1 - readiness.score / 100)}
+                  className="transition-all duration-700"
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-lg font-bold text-stone-900">{readiness.score}</span>
+              </div>
+            </div>
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <Activity size={14} className="text-amber-800" />
+                <p className="text-sm font-medium text-stone-900">{t('readiness')}</p>
+              </div>
+              <p className="text-xs text-stone-500">
+                {readiness.score >= 70
+                  ? t('readinessHigh')
+                  : readiness.score >= 40
+                    ? t('readinessMed')
+                    : t('readinessLow')}
+              </p>
+
+              {/* Weekly summary */}
+              <div className="mt-2 flex items-center gap-3 text-xs text-stone-400">
+                <span>{t('weekSummary')}:</span>
+                <span className="font-medium text-stone-600">{t('weekSessions', { count: readiness.weekSessions })}</span>
+                <span className="font-medium text-stone-600">{t('weekExercises', { count: readiness.weekExercises })}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Smart suggestion */}
+      {readiness && !dailyDone && todaySessions.length === 0 && (
+        <div className="flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50/50 p-3">
+          <Lightbulb size={18} className="text-amber-800 shrink-0" />
+          <p className="text-sm text-amber-900">
+            {!dailyDone
+              ? t('suggestExercise')
+              : todaySessions.length === 0
+                ? t('suggestSession')
+                : t('suggestRoutine')}
+          </p>
+        </div>
+      )}
 
       {/* Daily exercise */}
       {dailyExercise && (
