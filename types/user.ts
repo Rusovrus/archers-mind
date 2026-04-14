@@ -47,4 +47,5 @@ export interface User {
   profile: UserProfile;
   preferences: UserPreferences;
   stats: UserStats;
+  favoriteExercises?: string[];
 }

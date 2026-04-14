@@ -4,12 +4,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Plus, Clock, Check, ChevronRight, Flame, Target, Trophy, Lightbulb, Activity } from 'lucide-react';
+import { Plus, Clock, Check, ChevronRight, Flame, Target, Trophy, Lightbulb, Activity, Heart } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useAchievementCheck } from '@/hooks/useAchievementCheck';
 import { getTodaySessions } from '@/lib/sessions';
 import { getTodayCompletions } from '@/lib/exerciseCompletions';
-import { getFeaturedExercises } from '@/lib/exercises';
+import { getFeaturedExercises, getExercise } from '@/lib/exercises';
 import { calculateReadiness, ReadinessData } from '@/lib/readiness';
 import { scorePercentage } from '@/lib/utils';
 import { Session } from '@/types/session';
@@ -197,6 +197,49 @@ export default function TodayPage() {
           {dailyDone && (
             <p className="mt-2 text-xs text-green-700">{t('dailyExerciseDone')}</p>
           )}
+        </div>
+      )}
+
+      {/* Favorite exercises */}
+      {user?.favoriteExercises && user.favoriteExercises.length > 0 && (
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-3">
+            {t('yourFavorites')}
+          </p>
+          <div className="space-y-2">
+            {user.favoriteExercises.map((exId) => {
+              const ex = getExercise(exId);
+              if (!ex) return null;
+              const done = todayCompletions.some((c) => c.exerciseId === exId);
+              return (
+                <Link
+                  key={exId}
+                  href={`/${locale}/exercises/${exId}`}
+                  className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-3.5 shadow-sm hover:bg-stone-50 transition-colors"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-base">
+                    {categoryIcons[ex.category]}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-stone-900">
+                      {ex.title[locale as 'ro' | 'en']}
+                    </p>
+                    <div className="mt-0.5 flex items-center gap-2 text-xs text-stone-400">
+                      <Clock size={11} />
+                      <span>{Math.round(ex.duration / 60)} min</span>
+                    </div>
+                  </div>
+                  {done ? (
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-100 text-green-600">
+                      <Check size={14} />
+                    </div>
+                  ) : (
+                    <Heart size={14} className="fill-red-500 text-red-500 shrink-0" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
 

@@ -4,11 +4,12 @@ import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { ArrowLeft, Play, Pause, RotateCcw, Check, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, Play, Pause, RotateCcw, Check, Volume2, VolumeX, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { getExercise } from '@/lib/exercises';
 import { saveCompletion } from '@/lib/exerciseCompletions';
+import { toggleFavorite } from '@/lib/favorites';
 import { Exercise } from '@/types/exercise';
 import { AudioPlayer } from '@/components/AudioPlayer';
 import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
@@ -38,7 +39,7 @@ function formatTime(seconds: number): string {
 type TimerState = 'idle' | 'running' | 'paused' | 'completed';
 
 export default function ExerciseDetailPage() {
-  const { firebaseUser } = useAuth();
+  const { firebaseUser, user } = useAuth();
   const params = useParams();
   const locale = (params.locale as string) || 'ro';
   const exerciseId = params.id as string;
@@ -49,6 +50,7 @@ export default function ExerciseDetailPage() {
   const [timerState, setTimerState] = useState<TimerState>('idle');
   const [timeLeft, setTimeLeft] = useState(0);
   const [audioMode, setAudioMode] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const savedRef = useRef(false);
   const prevStepRef = useRef(-1);
@@ -63,6 +65,24 @@ export default function ExerciseDetailPage() {
     setExercise(ex);
     if (ex) setTimeLeft(ex.duration);
   }, [exerciseId]);
+
+  // Sync favorite state from user data
+  useEffect(() => {
+    if (user?.favoriteExercises) {
+      setIsFavorited(user.favoriteExercises.includes(exerciseId));
+    }
+  }, [user?.favoriteExercises, exerciseId]);
+
+  const handleToggleFavorite = useCallback(async () => {
+    if (!firebaseUser || !user) return;
+    const favorites = user.favoriteExercises ?? [];
+    setIsFavorited((prev) => !prev);
+    try {
+      await toggleFavorite(firebaseUser.uid, exerciseId, favorites);
+    } catch {
+      setIsFavorited((prev) => !prev);
+    }
+  }, [firebaseUser, user, exerciseId]);
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current) {
@@ -205,6 +225,18 @@ export default function ExerciseDetailPage() {
             )}
           </div>
         </div>
+        <button
+          onClick={handleToggleFavorite}
+          className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-stone-100 transition-colors"
+        >
+          <Heart
+            size={20}
+            className={cn(
+              'transition-colors',
+              isFavorited ? 'fill-red-500 text-red-500' : 'text-stone-400'
+            )}
+          />
+        </button>
       </div>
 
       {/* Description */}

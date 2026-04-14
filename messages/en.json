@@ -127,6 +127,7 @@
     "suggestSession": "Log a training session",
     "suggestRoutine": "Practice your pre-shot routine",
     "yourProfile": "Your profile",
+    "yourFavorites": "Your favorites",
     "level": "Level",
     "bow": "Bow",
     "goals": "Goals",
@@ -192,12 +193,15 @@
     "subtitle": "Train your mind for performance",
     "categories": {
       "all": "All",
+      "favorites": "Favorites",
       "breathing": "Breathing",
       "focus": "Focus",
       "visualization": "Visualization",
       "recovery": "Recovery",
       "precomp": "Pre-competition"
     },
+    "noFavorites": "No favorites yet",
+    "noFavoritesDesc": "Tap the heart icon on any exercise to add it here.",
     "difficulty": {
       "beginner": "Beginner",
       "intermediate": "Intermediate",

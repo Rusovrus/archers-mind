@@ -4,13 +4,15 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Clock, ChevronRight } from 'lucide-react';
+import { Clock, ChevronRight, Heart } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import { getExercises } from '@/lib/exercises';
 import { ExerciseCategory } from '@/types/exercise';
 import { cn } from '@/lib/utils';
 
-const categories: (ExerciseCategory | 'all')[] = [
+const categories: (ExerciseCategory | 'all' | 'favorites')[] = [
   'all',
+  'favorites',
   'breathing',
   'focus',
   'visualization',
@@ -20,6 +22,7 @@ const categories: (ExerciseCategory | 'all')[] = [
 
 const categoryIcons: Record<string, string> = {
   all: '✨',
+  favorites: '❤️',
   breathing: '🌬️',
   focus: '🎯',
   visualization: '👁️',
@@ -37,14 +40,18 @@ export default function ExercisesPage() {
   const params = useParams();
   const locale = (params.locale as string) || 'ro';
   const t = useTranslations('exercises');
+  const { user } = useAuth();
 
-  const [activeCategory, setActiveCategory] = useState<ExerciseCategory | 'all'>('all');
+  const [activeCategory, setActiveCategory] = useState<ExerciseCategory | 'all' | 'favorites'>('all');
 
   const allExercises = getExercises();
+  const favorites = user?.favoriteExercises ?? [];
   const filtered =
     activeCategory === 'all'
       ? allExercises
-      : allExercises.filter((e) => e.category === activeCategory);
+      : activeCategory === 'favorites'
+        ? allExercises.filter((e) => favorites.includes(e.id))
+        : allExercises.filter((e) => e.category === activeCategory);
 
   return (
     <div className="px-4 py-6 space-y-6">
@@ -74,40 +81,50 @@ export default function ExercisesPage() {
 
       {/* Exercise list */}
       <div className="space-y-3">
-        {filtered.map((exercise) => {
-          const minutes = Math.round(exercise.duration / 60);
-          return (
-            <Link
-              key={exercise.id}
-              href={`/${locale}/exercises/${exercise.id}`}
-              className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm hover:bg-stone-50 transition-colors"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-amber-50 text-lg">
-                {categoryIcons[exercise.category]}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-stone-900">
-                  {exercise.title[locale as 'ro' | 'en']}
-                </p>
-                <div className="mt-1 flex items-center gap-2">
-                  <span
-                    className={cn(
-                      'inline-block rounded-full px-2 py-0.5 text-xs font-medium',
-                      difficultyColors[exercise.difficulty]
-                    )}
-                  >
-                    {t(`difficulty.${exercise.difficulty}`)}
-                  </span>
-                  <span className="flex items-center gap-1 text-xs text-stone-400">
-                    <Clock size={12} />
-                    {minutes} min
-                  </span>
+        {activeCategory === 'favorites' && filtered.length === 0 ? (
+          <div className="rounded-xl border border-stone-200 bg-white p-8 text-center space-y-2">
+            <Heart size={32} className="mx-auto text-stone-300" />
+            <p className="font-medium text-stone-700">{t('noFavorites')}</p>
+            <p className="text-sm text-stone-400">{t('noFavoritesDesc')}</p>
+          </div>
+        ) : (
+          filtered.map((exercise) => {
+            const minutes = Math.round(exercise.duration / 60);
+            const isFav = favorites.includes(exercise.id);
+            return (
+              <Link
+                key={exercise.id}
+                href={`/${locale}/exercises/${exercise.id}`}
+                className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm hover:bg-stone-50 transition-colors"
+              >
+                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-amber-50 text-lg">
+                  {categoryIcons[exercise.category]}
                 </div>
-              </div>
-              <ChevronRight size={18} className="text-stone-300" />
-            </Link>
-          );
-        })}
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-stone-900">
+                    {exercise.title[locale as 'ro' | 'en']}
+                  </p>
+                  <div className="mt-1 flex items-center gap-2">
+                    <span
+                      className={cn(
+                        'inline-block rounded-full px-2 py-0.5 text-xs font-medium',
+                        difficultyColors[exercise.difficulty]
+                      )}
+                    >
+                      {t(`difficulty.${exercise.difficulty}`)}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs text-stone-400">
+                      <Clock size={12} />
+                      {minutes} min
+                    </span>
+                  </div>
+                </div>
+                {isFav && <Heart size={16} className="fill-red-500 text-red-500 shrink-0" />}
+                <ChevronRight size={18} className="text-stone-300" />
+              </Link>
+            );
+          })
+        )}
       </div>
     </div>
   );

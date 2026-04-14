@@ -127,6 +127,7 @@
     "suggestSession": "Adaugă o sesiune de antrenament",
     "suggestRoutine": "Practică rutina ta pre-shot",
     "yourProfile": "Profilul tău",
+    "yourFavorites": "Favoritele tale",
     "level": "Nivel",
     "bow": "Arc",
     "goals": "Obiective",
@@ -192,12 +193,15 @@
     "subtitle": "Antrenează-ți mintea pentru performanță",
     "categories": {
       "all": "Toate",
+      "favorites": "Favorite",
       "breathing": "Respirație",
       "focus": "Concentrare",
       "visualization": "Vizualizare",
       "recovery": "Recuperare",
       "precomp": "Pre-concurs"
     },
+    "noFavorites": "Niciun favorit încă",
+    "noFavoritesDesc": "Apasă pe inimă pe orice exercițiu pentru a-l adăuga aici.",
     "difficulty": {
       "beginner": "Începător",
       "intermediate": "Intermediar",
