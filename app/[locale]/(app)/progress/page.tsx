@@ -18,7 +18,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { ArrowLeft, TrendingUp, Target, Crosshair, CalendarDays, Download } from 'lucide-react';
+import { ArrowLeft, TrendingUp, Target, Crosshair, CalendarDays, Download, Trophy, Zap, Clock, Brain } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { getSessions } from '@/lib/sessions';
 import { getCompletions } from '@/lib/exerciseCompletions';
@@ -27,6 +27,7 @@ import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 import { TrainingCalendar } from '@/components/TrainingCalendar';
 import { scorePercentage } from '@/lib/utils';
 import { sessionsToCSV, downloadCSV } from '@/lib/exportData';
+import { computePersonalBests, PersonalBests } from '@/lib/personalBests';
 import { Session } from '@/types/session';
 import { ExerciseCompletion, ExerciseCategory } from '@/types/exercise';
 
@@ -145,6 +146,9 @@ export default function ProgressPage() {
       }));
   }, [sessions]);
 
+  // Personal bests
+  const bests = useMemo(() => computePersonalBests(sessions), [sessions]);
+
   // Exercise category distribution
   const categoryData = useMemo(() => {
     const counts: Partial<Record<ExerciseCategory, number>> = {};
@@ -253,6 +257,46 @@ export default function ProgressPage() {
                 label={t('sessionsMonth')}
                 value={String(stats.sessionsThisMonth)}
               />
+            </div>
+          )}
+
+          {/* Personal bests */}
+          {bests.bestScoreSession && (
+            <div className="rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-4 shadow-sm space-y-3">
+              <div className="flex items-center gap-2">
+                <Trophy size={16} className="text-amber-700" />
+                <p className="text-xs font-medium uppercase tracking-wide text-amber-700">
+                  {t('personalBests')}
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <RecordItem
+                  icon={<Target size={14} className="text-amber-800" />}
+                  label={t('pbBestScore')}
+                  value={`${bests.bestScorePct}%`}
+                  detail={`${bests.bestScoreSession.score} · ${bests.bestScoreSession.distance}m`}
+                />
+                <RecordItem
+                  icon={<Crosshair size={14} className="text-blue-600" />}
+                  label={t('pbMostArrows')}
+                  value={String(bests.mostArrowsSession)}
+                />
+                <RecordItem
+                  icon={<Brain size={14} className="text-green-600" />}
+                  label={t('pbBestFocus')}
+                  value={`${bests.bestFocus}/10`}
+                />
+                <RecordItem
+                  icon={<Zap size={14} className="text-purple-600" />}
+                  label={t('pbLowestAnxiety')}
+                  value={`${bests.lowestAnxiety}/10`}
+                />
+              </div>
+              <div className="flex gap-4 pt-1 border-t border-amber-100 text-xs text-stone-500">
+                <span>{t('pbTotalSessions', { count: bests.totalSessions })}</span>
+                <span>{t('pbTotalArrows', { count: bests.totalArrows.toLocaleString() })}</span>
+                <span>{t('pbTotalHours', { count: Math.round(bests.totalMinutes / 60) })}</span>
+              </div>
             </div>
           )}
 
@@ -423,6 +467,29 @@ function StatCard({
         <span className="text-xs text-stone-500">{label}</span>
       </div>
       <p className="text-xl font-bold text-stone-900">{value}</p>
+    </div>
+  );
+}
+
+function RecordItem({
+  icon,
+  label,
+  value,
+  detail,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  detail?: string;
+}) {
+  return (
+    <div className="space-y-0.5">
+      <div className="flex items-center gap-1.5">
+        {icon}
+        <span className="text-[10px] text-stone-500">{label}</span>
+      </div>
+      <p className="text-lg font-bold text-stone-900">{value}</p>
+      {detail && <p className="text-[10px] text-stone-400">{detail}</p>}
     </div>
   );
 }
