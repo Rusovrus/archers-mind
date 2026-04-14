@@ -18,7 +18,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { ArrowLeft, TrendingUp, Target, Crosshair, CalendarDays, Download, Trophy, Zap, Clock, Brain } from 'lucide-react';
+import { ArrowLeft, TrendingUp, TrendingDown, Minus, Target, Crosshair, CalendarDays, Download, Trophy, Zap, Clock, Brain, Goal } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { getSessions } from '@/lib/sessions';
 import { getCompletions } from '@/lib/exerciseCompletions';
@@ -28,6 +28,7 @@ import { TrainingCalendar } from '@/components/TrainingCalendar';
 import { scorePercentage } from '@/lib/utils';
 import { sessionsToCSV, downloadCSV } from '@/lib/exportData';
 import { computePersonalBests, PersonalBests } from '@/lib/personalBests';
+import { computeGoalProgress, GoalProgress } from '@/lib/goalProgress';
 import { Session } from '@/types/session';
 import { ExerciseCompletion, ExerciseCategory } from '@/types/exercise';
 
@@ -52,7 +53,7 @@ const CATEGORY_COLORS: Record<ExerciseCategory, string> = {
 // ── Page ────────────────────────────────────────────────────────────
 
 export default function ProgressPage() {
-  const { firebaseUser } = useAuth();
+  const { firebaseUser, user } = useAuth();
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations('progress');
@@ -148,6 +149,12 @@ export default function ProgressPage() {
 
   // Personal bests
   const bests = useMemo(() => computePersonalBests(sessions), [sessions]);
+
+  // Goal progress
+  const goalProgress = useMemo(
+    () => computeGoalProgress(sessions, user?.profile?.goals ?? []),
+    [sessions, user?.profile?.goals]
+  );
 
   // Exercise category distribution
   const categoryData = useMemo(() => {
@@ -296,6 +303,52 @@ export default function ProgressPage() {
                 <span>{t('pbTotalSessions', { count: bests.totalSessions })}</span>
                 <span>{t('pbTotalArrows', { count: bests.totalArrows.toLocaleString() })}</span>
                 <span>{t('pbTotalHours', { count: Math.round(bests.totalMinutes / 60) })}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Goal progress */}
+          {goalProgress.length > 0 && (
+            <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm space-y-3">
+              <div className="flex items-center gap-2">
+                <Goal size={16} className="text-amber-800" />
+                <p className="text-xs font-medium uppercase tracking-wide text-stone-400">
+                  {t('goalProgress')}
+                </p>
+              </div>
+              <div className="space-y-2">
+                {goalProgress.map((gp) => (
+                  <div
+                    key={gp.goal}
+                    className="flex items-center gap-3 rounded-lg bg-stone-50 p-3"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-stone-800">
+                        {t(`goalName.${gp.goal}`)}
+                      </p>
+                      <p className="text-xs text-stone-400">
+                        {t(gp.label)}
+                      </p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="text-lg font-bold text-stone-900">{gp.current}</p>
+                      {gp.previous > 0 && (
+                        <p className="text-[10px] text-stone-400">
+                          {t('goalPrevious', { value: gp.previous })}
+                        </p>
+                      )}
+                    </div>
+                    <div className="shrink-0">
+                      {gp.trend === 'up' ? (
+                        <TrendingUp size={18} className="text-green-600" />
+                      ) : gp.trend === 'down' ? (
+                        <TrendingDown size={18} className="text-red-500" />
+                      ) : (
+                        <Minus size={18} className="text-stone-400" />
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

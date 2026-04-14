@@ -419,6 +419,24 @@
     "pbTotalSessions": "{count} sesiuni",
     "pbTotalArrows": "{count} săgeți",
     "pbTotalHours": "{count}h antrenament",
+    "goalProgress": "Progres obiective",
+    "goalPrevious": "era {value}",
+    "goalName": {
+      "focus": "Concentrare",
+      "anxiety": "Gestionare anxietate",
+      "confidence": "Încredere",
+      "consistency": "Consistență",
+      "competition": "Pregătire competiție",
+      "recovery": "Recuperare"
+    },
+    "goalMetric": {
+      "focus": "Focus mediu pre-sesiune (1-10)",
+      "anxiety": "Anxietate medie pre-sesiune (mai mic = mai bine)",
+      "confidence": "Încredere medie pre-sesiune (1-10)",
+      "consistency": "Sesiuni pe săptămână",
+      "competition": "Tendință scoruri competiție",
+      "recovery": "Satisfacție medie post-sesiune (1-10)"
+    },
     "viewProgress": "Vezi progresul",
     "breathing": "Respirație",
     "focusCat": "Concentrare",

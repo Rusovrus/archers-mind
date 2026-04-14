@@ -419,6 +419,24 @@
     "pbTotalSessions": "{count} sessions",
     "pbTotalArrows": "{count} arrows",
     "pbTotalHours": "{count}h trained",
+    "goalProgress": "Goal progress",
+    "goalPrevious": "was {value}",
+    "goalName": {
+      "focus": "Focus",
+      "anxiety": "Anxiety management",
+      "confidence": "Confidence",
+      "consistency": "Consistency",
+      "competition": "Competition readiness",
+      "recovery": "Recovery"
+    },
+    "goalMetric": {
+      "focus": "Avg pre-session focus (1-10)",
+      "anxiety": "Avg pre-session anxiety (lower is better)",
+      "confidence": "Avg pre-session confidence (1-10)",
+      "consistency": "Sessions per week",
+      "competition": "Competition score trend",
+      "recovery": "Avg post-session satisfaction (1-10)"
+    },
     "viewProgress": "View progress",
     "breathing": "Breathing",
     "focusCat": "Focus",
