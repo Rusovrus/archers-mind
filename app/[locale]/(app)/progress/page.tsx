@@ -18,7 +18,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { ArrowLeft, TrendingUp, Target, Crosshair, CalendarDays } from 'lucide-react';
+import { ArrowLeft, TrendingUp, Target, Crosshair, CalendarDays, Download } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { getSessions } from '@/lib/sessions';
 import { getCompletions } from '@/lib/exerciseCompletions';
@@ -26,6 +26,7 @@ import { getActivityCalendar, DayActivity } from '@/lib/activityCalendar';
 import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 import { TrainingCalendar } from '@/components/TrainingCalendar';
 import { scorePercentage } from '@/lib/utils';
+import { sessionsToCSV, downloadCSV } from '@/lib/exportData';
 import { Session } from '@/types/session';
 import { ExerciseCompletion, ExerciseCategory } from '@/types/exercise';
 
@@ -186,10 +187,23 @@ export default function ProgressPage() {
         >
           <ArrowLeft size={20} />
         </Link>
-        <div>
+        <div className="flex-1">
           <h1 className="text-xl font-bold text-stone-900">{t('title')}</h1>
           <p className="text-sm text-stone-500">{t('subtitle')}</p>
         </div>
+        {sessions.length > 0 && (
+          <button
+            onClick={() => {
+              const csv = sessionsToCSV(sessions, locale);
+              const date = new Date().toISOString().split('T')[0];
+              downloadCSV(csv, `archers-mind-${date}.csv`);
+            }}
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-stone-500 hover:bg-stone-100 transition-colors"
+            title={t('exportCSV')}
+          >
+            <Download size={18} />
+          </button>
+        )}
       </div>
 
       {/* Activity heatmap — always visible */}

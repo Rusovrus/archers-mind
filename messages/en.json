@@ -410,6 +410,7 @@
     "calDaySessions": "{count} sessions",
     "calDayExercises": "{count} exercises",
     "calNoActivity": "No activity this day",
+    "exportCSV": "Export data",
     "viewProgress": "View progress",
     "breathing": "Breathing",
     "focusCat": "Focus",

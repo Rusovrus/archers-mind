@@ -410,6 +410,7 @@
     "calDaySessions": "{count} sesiuni",
     "calDayExercises": "{count} exerciții",
     "calNoActivity": "Nicio activitate în această zi",
+    "exportCSV": "Exportă date",
     "viewProgress": "Vezi progresul",
     "breathing": "Respirație",
     "focusCat": "Concentrare",
