@@ -24,6 +24,7 @@ import { getSessions } from '@/lib/sessions';
 import { getCompletions } from '@/lib/exerciseCompletions';
 import { getActivityCalendar, DayActivity } from '@/lib/activityCalendar';
 import { ActivityHeatmap } from '@/components/ActivityHeatmap';
+import { TrainingCalendar } from '@/components/TrainingCalendar';
 import { scorePercentage } from '@/lib/utils';
 import { Session } from '@/types/session';
 import { ExerciseCompletion, ExerciseCategory } from '@/types/exercise';
@@ -195,6 +196,16 @@ export default function ProgressPage() {
       {activityData.length > 0 && (
         <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
           <ActivityHeatmap data={activityData} locale={locale} />
+        </div>
+      )}
+
+      {/* Training calendar */}
+      {activityData.length > 0 && (
+        <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-3">
+            {t('trainingCalendar')}
+          </p>
+          <TrainingCalendar data={activityData} locale={locale} />
         </div>
       )}
 
