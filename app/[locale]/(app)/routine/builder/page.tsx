@@ -62,7 +62,9 @@ export default function RoutineBuilderPage() {
   useEffect(() => {
     if (loaded) return;
 
-    if (editId && editId !== 'default' && firebaseUser) {
+    if (editId && editId !== 'default') {
+      // Wait for auth before loading custom routine
+      if (!firebaseUser) return;
       getRoutine(firebaseUser.uid, editId).then((r) => {
         if (r) {
           setName(r.name);

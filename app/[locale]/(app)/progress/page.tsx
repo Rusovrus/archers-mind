@@ -22,6 +22,8 @@ import { ArrowLeft, TrendingUp, Target, Crosshair, CalendarDays } from 'lucide-r
 import { useAuth } from '@/hooks/useAuth';
 import { getSessions } from '@/lib/sessions';
 import { getCompletions } from '@/lib/exerciseCompletions';
+import { getActivityCalendar, DayActivity } from '@/lib/activityCalendar';
+import { ActivityHeatmap } from '@/components/ActivityHeatmap';
 import { scorePercentage } from '@/lib/utils';
 import { Session } from '@/types/session';
 import { ExerciseCompletion, ExerciseCategory } from '@/types/exercise';
@@ -55,6 +57,7 @@ export default function ProgressPage() {
 
   const [sessions, setSessions] = useState<Session[]>([]);
   const [completions, setCompletions] = useState<ExerciseCompletion[]>([]);
+  const [activityData, setActivityData] = useState<DayActivity[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -62,10 +65,12 @@ export default function ProgressPage() {
     Promise.all([
       getSessions(firebaseUser.uid),
       getCompletions(firebaseUser.uid),
+      getActivityCalendar(firebaseUser.uid),
     ])
-      .then(([s, c]) => {
+      .then(([s, c, a]) => {
         setSessions(s);
         setCompletions(c);
+        setActivityData(a);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -185,6 +190,13 @@ export default function ProgressPage() {
           <p className="text-sm text-stone-500">{t('subtitle')}</p>
         </div>
       </div>
+
+      {/* Activity heatmap — always visible */}
+      {activityData.length > 0 && (
+        <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+          <ActivityHeatmap data={activityData} locale={locale} />
+        </div>
+      )}
 
       {sessions.length === 0 ? (
         <div className="rounded-xl border border-stone-200 bg-white p-8 text-center space-y-2">

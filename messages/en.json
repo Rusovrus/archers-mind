@@ -216,6 +216,7 @@
       "backToExercises": "Back to exercises",
       "doAgain": "Do again"
     },
+    "audioMode": "Audio guide",
     "guidedStep": "Step {current} of {total}",
     "featured": "Featured",
     "player": {
@@ -304,6 +305,7 @@
     "completed": "Routine completed!",
     "completedDesc": "You practiced the routine successfully.",
     "practiceAgain": "Practice again",
+    "audioMode": "Audio guide",
     "tapToStart": "Tap Start to begin",
     "practices": "{count} practices",
     "seconds": "{s}s",
@@ -387,6 +389,10 @@
     "confidence": "Confidence",
     "satisfaction": "Satisfaction",
     "week": "W{n}",
+    "activityCalendar": "Activity calendar",
+    "activeDays": "{count} active days",
+    "less": "Less",
+    "more": "More",
     "viewProgress": "View progress",
     "breathing": "Breathing",
     "focusCat": "Focus",

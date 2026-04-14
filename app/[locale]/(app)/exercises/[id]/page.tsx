@@ -4,13 +4,14 @@ import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { ArrowLeft, Play, Pause, RotateCcw, Check } from 'lucide-react';
+import { ArrowLeft, Play, Pause, RotateCcw, Check, Volume2, VolumeX } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { getExercise } from '@/lib/exercises';
 import { saveCompletion } from '@/lib/exerciseCompletions';
 import { Exercise } from '@/types/exercise';
 import { AudioPlayer } from '@/components/AudioPlayer';
+import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -47,8 +48,15 @@ export default function ExerciseDetailPage() {
   const [exercise, setExercise] = useState<Exercise | null>(null);
   const [timerState, setTimerState] = useState<TimerState>('idle');
   const [timeLeft, setTimeLeft] = useState(0);
+  const [audioMode, setAudioMode] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const savedRef = useRef(false);
+  const prevStepRef = useRef(-1);
+
+  const { speak, stop, isSupported, playBeep } = useSpeechSynthesis({
+    locale,
+    enabled: audioMode,
+  });
 
   useEffect(() => {
     const ex = getExercise(exerciseId);
@@ -111,6 +119,37 @@ export default function ExerciseDetailPage() {
     });
   }, [timerState, firebaseUser, exercise, tc]);
 
+  // Guided steps — compute which step to show based on elapsed time
+  const steps = exercise?.steps;
+  const currentStepIndex = useMemo(() => {
+    if (!exercise || !steps || steps.length === 0) return -1;
+    const elapsed = exercise.duration - timeLeft;
+    const stepDuration = exercise.duration / steps.length;
+    const idx = Math.floor(elapsed / stepDuration);
+    return Math.min(idx, steps.length - 1);
+  }, [exercise, steps, timeLeft]);
+
+  // Speak current step when it changes
+  useEffect(() => {
+    if (!audioMode || timerState !== 'running') return;
+    if (!exercise?.steps || currentStepIndex < 0) return;
+    if (currentStepIndex === prevStepRef.current) return;
+    prevStepRef.current = currentStepIndex;
+    playBeep();
+    const timer = setTimeout(() => {
+      speak(exercise.steps![currentStepIndex][locale as 'ro' | 'en']);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [audioMode, timerState, currentStepIndex, exercise, locale, speak, playBeep]);
+
+  // Stop speech on pause/reset/complete
+  useEffect(() => {
+    if (timerState !== 'running') {
+      stop();
+      if (timerState === 'idle') prevStepRef.current = -1;
+    }
+  }, [timerState, stop]);
+
   if (!exercise) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
@@ -124,16 +163,6 @@ export default function ExerciseDetailPage() {
 
   const minutes = Math.round(exercise.duration / 60);
   const progress = exercise.duration > 0 ? ((exercise.duration - timeLeft) / exercise.duration) * 100 : 0;
-
-  // Guided steps — compute which step to show based on elapsed time
-  const steps = exercise.steps;
-  const currentStepIndex = useMemo(() => {
-    if (!steps || steps.length === 0) return -1;
-    const elapsed = exercise.duration - timeLeft;
-    const stepDuration = exercise.duration / steps.length;
-    const idx = Math.floor(elapsed / stepDuration);
-    return Math.min(idx, steps.length - 1);
-  }, [steps, exercise.duration, timeLeft]);
 
   const audioSrc = exercise.audioUrl[locale as 'ro' | 'en'];
 
@@ -162,6 +191,18 @@ export default function ExerciseDetailPage() {
               {t(`difficulty.${exercise.difficulty}`)}
             </span>
             <span className="text-xs text-stone-400">{minutes} min</span>
+            {isSupported && (
+              <button
+                onClick={() => setAudioMode((p) => !p)}
+                className={cn(
+                  'flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors',
+                  audioMode ? 'bg-amber-800 text-white' : 'bg-stone-100 text-stone-500'
+                )}
+              >
+                {audioMode ? <Volume2 size={12} /> : <VolumeX size={12} />}
+                {t('audioMode')}
+              </button>
+            )}
           </div>
         </div>
       </div>

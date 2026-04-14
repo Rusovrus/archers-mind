@@ -216,6 +216,7 @@
       "backToExercises": "Înapoi la exerciții",
       "doAgain": "Repetă"
     },
+    "audioMode": "Ghid audio",
     "guidedStep": "Pas {current} din {total}",
     "featured": "Recomandate",
     "player": {
@@ -304,6 +305,7 @@
     "completed": "Rutină completată!",
     "completedDesc": "Ai practicat rutina cu succes.",
     "practiceAgain": "Practică din nou",
+    "audioMode": "Ghid audio",
     "tapToStart": "Apasă Start pentru a începe",
     "practices": "{count} practici",
     "seconds": "{s}s",
@@ -387,6 +389,10 @@
     "confidence": "Încredere",
     "satisfaction": "Satisfacție",
     "week": "S{n}",
+    "activityCalendar": "Calendar activitate",
+    "activeDays": "{count} zile active",
+    "less": "Mai puțin",
+    "more": "Mai mult",
     "viewProgress": "Vezi progresul",
     "breathing": "Respirație",
     "focusCat": "Concentrare",

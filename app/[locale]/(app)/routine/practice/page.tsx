@@ -4,11 +4,12 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { ArrowLeft, Play, Pause, RotateCcw, Check, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Play, Pause, RotateCcw, Check, ChevronRight, Volume2, VolumeX } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { getDefaultRoutine, getRoutine, recordPractice } from '@/lib/routines';
 import { Routine, RoutineStep } from '@/types/exercise';
+import { useSpeechSynthesis } from '@/hooks/useSpeechSynthesis';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 
@@ -28,8 +29,15 @@ export default function RoutinePracticePage() {
   const [state, setState] = useState<PracticeState>('ready');
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [audioMode, setAudioMode] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const savedRef = useRef(false);
+  const prevStepRef = useRef(-1);
+
+  const { speak, stop, isSupported, playBeep } = useSpeechSynthesis({
+    locale,
+    enabled: audioMode,
+  });
 
   // Load routine
   useEffect(() => {
@@ -115,6 +123,31 @@ export default function RoutinePracticePage() {
     });
   }, [state, firebaseUser, routine, tc]);
 
+  // Speak step name + cue when step changes
+  useEffect(() => {
+    if (!audioMode || state !== 'running' || !routine) return;
+    if (currentStepIndex === prevStepRef.current) return;
+    prevStepRef.current = currentStepIndex;
+    const step = routine.steps[currentStepIndex];
+    playBeep();
+    const timer = setTimeout(() => {
+      // Short steps (≤4s): only name. Longer steps: name + cue.
+      const text = step.duration <= 4
+        ? step.name
+        : step.cue ? `${step.name}. ${step.cue}` : step.name;
+      speak(text, false); // don't interrupt previous — let it finish naturally
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [audioMode, state, currentStepIndex, routine, speak, playBeep]);
+
+  // Stop speech on pause/reset/complete
+  useEffect(() => {
+    if (state !== 'running') {
+      stop();
+      if (state === 'ready') prevStepRef.current = -1;
+    }
+  }, [state, stop]);
+
   // Cleanup
   useEffect(() => {
     return () => clearTimer();
@@ -156,9 +189,23 @@ export default function RoutinePracticePage() {
         </Link>
         <div className="flex-1 min-w-0">
           <h1 className="text-lg font-bold text-stone-900">{routine.name}</h1>
-          <p className="text-xs text-stone-400">
-            {routine.steps.length} {t('steps').toLowerCase()} · {routine.totalDuration}s
-          </p>
+          <div className="flex items-center gap-2 mt-0.5">
+            <p className="text-xs text-stone-400">
+              {routine.steps.length} {t('steps').toLowerCase()} · {routine.totalDuration}s
+            </p>
+            {isSupported && (
+              <button
+                onClick={() => setAudioMode((p) => !p)}
+                className={cn(
+                  'flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors',
+                  audioMode ? 'bg-amber-800 text-white' : 'bg-stone-100 text-stone-500'
+                )}
+              >
+                {audioMode ? <Volume2 size={12} /> : <VolumeX size={12} />}
+                {t('audioMode')}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
