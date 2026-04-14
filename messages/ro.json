@@ -128,6 +128,13 @@
     "suggestRoutine": "Practică rutina ta pre-shot",
     "yourProfile": "Profilul tău",
     "yourFavorites": "Favoritele tale",
+    "recommendedForYou": "Recomandate pentru tine",
+    "reason": {
+      "high_anxiety": "Te ajută să gestionezi anxietatea",
+      "low_focus": "Îți îmbunătățește concentrarea",
+      "low_confidence": "Construiește încrederea",
+      "low_satisfaction": "Susține recuperarea"
+    },
     "level": "Nivel",
     "bow": "Arc",
     "goals": "Obiective",

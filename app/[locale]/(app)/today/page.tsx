@@ -4,13 +4,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { Plus, Clock, Check, ChevronRight, Flame, Target, Trophy, Lightbulb, Activity, Heart } from 'lucide-react';
+import { Plus, Clock, Check, ChevronRight, Flame, Target, Trophy, Lightbulb, Activity, Heart, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useAchievementCheck } from '@/hooks/useAchievementCheck';
 import { getTodaySessions } from '@/lib/sessions';
 import { getTodayCompletions } from '@/lib/exerciseCompletions';
 import { getFeaturedExercises, getExercise } from '@/lib/exercises';
 import { calculateReadiness, ReadinessData } from '@/lib/readiness';
+import { getRecommendations, Recommendation } from '@/lib/recommendations';
 import { scorePercentage } from '@/lib/utils';
 import { Session } from '@/types/session';
 import { Exercise, ExerciseCompletion } from '@/types/exercise';
@@ -55,6 +56,7 @@ export default function TodayPage() {
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [todayCompletions, setTodayCompletions] = useState<ExerciseCompletion[]>([]);
   const [readiness, setReadiness] = useState<ReadinessData | null>(null);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
 
   const name = user?.displayName?.split(' ')[0] || 'Arcaș';
   const streak = user?.preferences?.streakCount ?? 0;
@@ -78,6 +80,7 @@ export default function TodayPage() {
   useEffect(() => {
     if (!firebaseUser || !user) return;
     calculateReadiness(firebaseUser.uid, user).then(setReadiness).catch(() => {});
+    getRecommendations(firebaseUser.uid).then(setRecommendations).catch(() => {});
   }, [firebaseUser, user]);
 
   return (
@@ -161,6 +164,49 @@ export default function TodayPage() {
                 ? t('suggestSession')
                 : t('suggestRoutine')}
           </p>
+        </div>
+      )}
+
+      {/* Personalized recommendations */}
+      {recommendations.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles size={14} className="text-amber-800" />
+            <p className="text-xs font-medium uppercase tracking-wide text-stone-400">
+              {t('recommendedForYou')}
+            </p>
+          </div>
+          <div className="space-y-2">
+            {recommendations.map((rec) => {
+              const done = todayCompletions.some((c) => c.exerciseId === rec.exercise.id);
+              return (
+                <Link
+                  key={rec.exercise.id}
+                  href={`/${locale}/exercises/${rec.exercise.id}`}
+                  className="flex items-center gap-3 rounded-xl border border-amber-100 bg-amber-50/30 p-3.5 hover:bg-amber-50 transition-colors"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-base">
+                    {categoryIcons[rec.exercise.category]}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-stone-900">
+                      {rec.exercise.title[locale as 'ro' | 'en']}
+                    </p>
+                    <p className="mt-0.5 text-xs text-amber-700">
+                      {t(`reason.${rec.reason}`)}
+                    </p>
+                  </div>
+                  {done ? (
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-100 text-green-600">
+                      <Check size={14} />
+                    </div>
+                  ) : (
+                    <ChevronRight size={16} className="text-amber-400" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
 

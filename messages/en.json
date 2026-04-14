@@ -128,6 +128,13 @@
     "suggestRoutine": "Practice your pre-shot routine",
     "yourProfile": "Your profile",
     "yourFavorites": "Your favorites",
+    "recommendedForYou": "Recommended for you",
+    "reason": {
+      "high_anxiety": "Helps manage anxiety",
+      "low_focus": "Improves your focus",
+      "low_confidence": "Builds confidence",
+      "low_satisfaction": "Supports recovery"
+    },
     "level": "Level",
     "bow": "Bow",
     "goals": "Goals",
